@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="black"><meta name="author" content="李子康"><meta name="copyright" content="李子康"><meta name="generator" content="Hexo 4.2.1"><meta name="theme" content="hexo-theme-yun"><title>信息安全实验二 | null</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="none" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.11/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_stqaphw3j4.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link rel="shortcut icon" type="image/svg+xml" href="/images/%E7%9A%AE%E5%8D%A1%E4%B8%98-2.ico"><link rel="mask-icon" href="/images/%E7%9A%AE%E5%8D%A1%E4%B8%98-2.ico" color="black"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"root":"/","title":["Li","Zi","Kang","Blog"],"version":"0.9.2","anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><script src="//at.alicdn.com/t/font_1929835_ma93gsxr90m.css" async></script><meta name="description" content="实验二、漏洞扫描与病毒防治一、实验目的 掌握漏洞扫描这种信息探测技术的原理。   学会使用常见的漏洞扫描工具。   熟悉经典的操作系统漏洞和配置漏洞。    二、实验环境 网络：局域网环境。   软件：X-Scan-v3.1。   三、实验原理所谓的漏洞，指的是硬件、软件或策略上的缺陷，从而使得攻击者能够在未授权的情况下访问或控制系统。 漏洞扫描，就是自动检测远程或本地主机安全性弱点的过程。它采用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息安全实验二">
+<meta property="og:url" content="http://yoursite.com/2021/05/18/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E4%BA%8C/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="实验二、漏洞扫描与病毒防治一、实验目的 掌握漏洞扫描这种信息探测技术的原理。   学会使用常见的漏洞扫描工具。   熟悉经典的操作系统漏洞和配置漏洞。    二、实验环境 网络：局域网环境。   软件：X-Scan-v3.1。   三、实验原理所谓的漏洞，指的是硬件、软件或策略上的缺陷，从而使得攻击者能够在未授权的情况下访问或控制系统。 漏洞扫描，就是自动检测远程或本地主机安全性弱点的过程。它采用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps1-1621588506078.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps2-1621588506100.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps3-1621588506101.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps4-1621588506101.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps5-1621588506079.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps6-1621588506079.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps7-1621588506079.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps8-1621588506079.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps9-1621588506079.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps10-1621588506079.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps11-1621588506079.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps12-1621588506080.jpg">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps13-1621588506080.jpg">
+<meta property="article:published_time" content="2021-05-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-05-23T09:26:19.990Z">
+<meta property="article:author" content="李子康">
+<meta property="article:tag" content="信息安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps1-1621588506078.jpg"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script defer src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="李子康"><img width="96" loading="lazy" src="/images/bak.jpg" alt="李子康"></a><div class="site-author-name"><a href="/about/">李子康</a></div><a class="site-name" href="/about/site.html"></a><sub class="site-subtitle"></sub><div class="site-desciption">个人技术博客</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="我的主页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">11</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">7</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">5</span></a></div><a class="site-state-item hty-icon-button" href="https://yun.yunyoujun.cn" target="_blank" rel="noopener" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1191787635&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/lizikanglzk" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:1191787635@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=506556053" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/zou-guo-lu-guo-bu-yao-cuo-guo-88" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/352594163" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微信" target="_blank" style="color:#1AAD19"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-2-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://t.me/YunYouJun" title="Telegram" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://t.me/elpsycn" title="Telegram Channel" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-fill"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://travellings.now.sh/" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-send-plane-2-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-men-line"></use></svg></a><a class="links-item hty-icon-button" href="/girls/" title="我的老婆们" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-women-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#实验二、漏洞扫描与病毒防治"><span class="toc-text">实验二、漏洞扫描与病毒防治</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、实验目的"><span class="toc-text">一、实验目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、实验环境"><span class="toc-text">二、实验环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、实验原理"><span class="toc-text">三、实验原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、实验内容"><span class="toc-text">四、实验内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、实验步骤-·"><span class="toc-text">五、实验步骤 ·</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、结合你维护计算机的经验，谈谈病毒防治的技术方法手段-至少谈3款软件"><span class="toc-text">六、结合你维护计算机的经验，谈谈病毒防治的技术方法手段( 至少谈3款软件)</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/18/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E4%BA%8C/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="李子康"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">信息安全实验二</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2021-05-18 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-18T00:00:00+08:00">2021-05-18</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-05-23 17:26:19" itemprop="dateModified" datetime="2021-05-23T17:26:19+08:00">2021-05-23</time></div><div class="post-classify"><span class="post-category"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">信息安全</span></a></span> > <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">实验</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag" href="/tags/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">信息安全</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:black;"><h2 id="实验二、漏洞扫描与病毒防治"><a href="#实验二、漏洞扫描与病毒防治" class="headerlink" title="实验二、漏洞扫描与病毒防治"></a>实验二、漏洞扫描与病毒防治</h2><h3 id="一、实验目的"><a href="#一、实验目的" class="headerlink" title="一、实验目的"></a>一、实验目的</h3><ol>
+<li><p>掌握漏洞扫描这种信息探测技术的原理。 </p>
+</li>
+<li><p>学会使用常见的漏洞扫描工具。 </p>
+</li>
+<li><p>熟悉经典的操作系统漏洞和配置漏洞。 </p>
+</li>
+</ol>
+<h3 id="二、实验环境"><a href="#二、实验环境" class="headerlink" title="二、实验环境"></a>二、实验环境</h3><ol>
+<li>网络：局域网环境。</li>
+</ol>
+<ol start="2">
+<li>软件：X-Scan-v3.1。 </li>
+</ol>
+<h3 id="三、实验原理"><a href="#三、实验原理" class="headerlink" title="三、实验原理"></a>三、实验原理</h3><p>所谓的漏洞，指的是硬件、软件或策略上的缺陷，从而使得攻击者能够在未授权的情况下访问或控制系统。 漏洞扫描，就是自动检测远程或本地主机安全性弱点的过程。它采用积极的、非破坏性的办法来检验系统是否有可能被攻击崩溃。它利用了一系列的脚本模拟对系统进行攻击的行为，然后对结果进行分析。它还针对已知的网络漏洞进行检验。 其工作机制是：在端口扫描的基础上，判断系统正在运行的服务，针对不同的服务，结合漏洞知识，发送不同的定制数据包，分析返回的数据包，确定系统是否存在该漏洞。对于不同的系统、不同的服务，漏洞扫描使用的工具不同。 漏洞扫描可以包含的种类有： · 系统漏洞 ·  特定服务的漏洞  o WEB服务 o 数据库服务 o FTP服务 o Mail服务  · 网络及管理设备漏洞  o 路由器、交换机 o SNMP设备 信息泄漏漏洞  o 用户信息 o 共享信息  · 人为管理漏洞  o 弱口令 o 错误配置  </p>
+<p>漏洞扫描的日后发展趋势为： ·</p>
+<p> 插件（plugin，或者叫做功能模块）技术  o 每个插件都封装一个或者多个漏洞的测试手段，主扫描程序通过调用插件的方法来 执行扫描。  · </p>
+<p>使用专用脚本语言  o 其实就是一种更高级的插件技术，用户可以使用专用脚本语言来扩充软件功能。  ·  </p>
+<p>由安全扫描程序到安全评估专家系统  o 扫描系统都能够将对单个主机的扫描结果进行整理，形成报表，并能够对具体漏洞 提出一些解决方法。 </p>
+<h3 id="四、实验内容"><a href="#四、实验内容" class="headerlink" title="四、实验内容"></a>四、实验内容</h3><ol>
+<li><p>Netbios空会话漏洞扫描。 </p>
+</li>
+<li><p>IIS和CGI漏洞扫描。 </p>
+</li>
+<li><p>弱口令漏洞扫描。 </p>
+</li>
+<li><p>查看漏洞扫描报告。 </p>
+</li>
+<li><p>分析各种漏洞的补救措施。 </p>
+</li>
+</ol>
+<h3 id="五、实验步骤-·"><a href="#五、实验步骤-·" class="headerlink" title="五、实验步骤 ·"></a>五、实验步骤 ·</h3><p>1、xscan漏洞扫描：</p>
+<p>运行实验工具目录下的xscan-gui.exe。 ·</p>
+<p>选择”设置”菜单项中的”扫描参数”。  ·  </p>
+<p>在”基本设置”选项卡中输入目标服务器的IP地址（如192.168.33.111），也就是我们的漏洞扫描对象。</p>
+<p>在”高级设置”选项卡的―其他设置‖中，选择”无条件扫描”。这是为了防止漏过无法ping通的目标主机。</p>
+<p>点击”确定”按钮，结束扫描参数的设置，回到XScan主界面。 ·</p>
+<p>选择”设置”菜单项中的”扫描模块”。  ·  </p>
+<p>在”扫描模块”的左边列表中仅选中”Netbios信息”。点击”确定”按钮结束”扫描模块”的设置，回到XScan主界面。</p>
+<p>第一次扫描完毕之后，查看自动打开的扫描报告（也可通过―查看‖ 菜单项中的―检测报告‖ 来查看扫描报告）。请将扫描的结果写入实验报告。</p>
+<p>  ·  </p>
+<p>再次进入”扫描模块”设置界面，选中”NT-Server弱口令”、”FTP弱口令”、”Anonymous Pub”、”POP3弱口令”、”SMTP弱口令”、”SQL-Server弱口令”。点击”确定”按钮回到XScan主界面。</p>
+<p>点击运行按钮，或者选择”文件”菜单项中的”开始扫描”进行弱口令漏洞扫描。  · </p>
+<p>第二次扫描完毕之后，查看自动打开的扫描报告。请将扫描的结果写入实验报告。 ·  </p>
+<p>再次进入”扫描模块”设置界面，选中”IIS编码/解码漏洞”、”CGI漏洞”。点击”确定”按钮回到XScan主界面。</p>
+<p>点击运行按钮，或者选择”文件”菜单项中的”开始扫描”进行IIS/CGI漏洞扫描。  · </p>
+<p>第三次扫描完毕之后，查看自动打开的扫描报告。请将扫描的结果写入实验报告。 ·  </p>
+<p>再次进入”扫描模块”设置界面，点击”全选”按钮选择所有的扫描模块。点击”确定”按钮回到XScan主界面。  · </p>
+<p>点击运行按钮，或者选择”文件”菜单项中的”开始扫描”进行全面漏洞扫描。  · </p>
+<p>第四次扫描完毕之后，查看自动打开的扫描报告。请将扫描的结果写入实验报告。 ·  </p>
+<p>理解各种漏洞的形成原因，并分析相应的弥补、防御措施。</p>
+<p><strong>1.第一次扫描完毕之后，查看自动打开的扫描报告（也可通过―查看‖ 菜单项中的―检测报告‖ 来查看扫描报告）。请将扫描的结果写入实验报告。</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps1-1621588506078.jpg" alt="img" loading="lazy"> </p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps2-1621588506100.jpg" alt="img" loading="lazy"> </p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps3-1621588506101.jpg" alt="img" loading="lazy"> </p>
+<p><strong>2.第二次扫描完毕之后，查看自动打开的扫描报告。请将扫描的结果写入实验报告。</strong> </p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps4-1621588506101.jpg" alt="img" loading="lazy"> </p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps5-1621588506079.jpg" alt="img" loading="lazy"> </p>
+<p><strong>3.第三次扫描完毕之后，查看自动打开的扫描报告。请将扫描的结果写入实验报告。 ·</strong>  </p>
+<hr>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps6-1621588506079.jpg" alt="img" loading="lazy"> </p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps7-1621588506079.jpg" alt="img" loading="lazy"> </p>
+<p><strong>4.第四次扫描完毕之后，查看自动打开的扫描报告。请将扫描的结果写入实验报告</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps8-1621588506079.jpg" alt="img" loading="lazy"> </p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps9-1621588506079.jpg" alt="img" loading="lazy"> </p>
+<p>漏洞扫描还有没有其他的方法？</p>
+<h3 id="六、结合你维护计算机的经验，谈谈病毒防治的技术方法手段-至少谈3款软件"><a href="#六、结合你维护计算机的经验，谈谈病毒防治的技术方法手段-至少谈3款软件" class="headerlink" title="六、结合你维护计算机的经验，谈谈病毒防治的技术方法手段( 至少谈3款软件)"></a>六、结合你维护计算机的经验，谈谈病毒防治的技术方法手段( 至少谈3款软件)</h3><p><strong>（1）软件1：火绒</strong></p>
+<p>操作方法：火绒</p>
+<p>特色功能：</p>
+<p>简洁</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps10-1621588506079.jpg" alt="img" loading="lazy"> </p>
+<p><strong>（2）软件2：腾讯安全管家</strong></p>
+<p>操作方法： 腾讯安全管家</p>
+<p>特色功能：</p>
+<p>广告较多</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps11-1621588506079.jpg" alt="img" loading="lazy"> </p>
+<hr>
+<p><strong>（3）软件3：360</strong></p>
+<p>操作方法：360</p>
+<p>特色功能：</p>
+<p><strong>毒</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps12-1621588506080.jpg" alt="img" loading="lazy"> </p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/wps13-1621588506080.jpg" alt="img" loading="lazy"> </p>
+<p>七、实验小结（100字左右）</p>
+<p><strong><em>\</em>漏洞扫描与病毒防治**</strong></p>
+<p>在本次实验中学会了用工具来漏洞扫描和病毒防治，在漏洞扫描中体会到漏洞的多样性，体会到在系统和软件的开发要多注意，平时使用未知的软件和程序也会更加注意，在病毒防范实验中我体会到一个好的杀毒软件的宝贵，好的杀毒软件：火绒简洁，好用，而不好的：360不仅没起到杀毒的作用，反而给我下载了很多绑定软件，它就是“毒”</p>
+<p>在本次实验中受益匪浅，对网络安全有了更加深刻的了解，期待下一次的实验。</p>
+</div></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2021/05/21/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E4%B8%89/" rel="prev" title="信息安全实验二"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">信息安全实验二</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2021/05/15/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E4%B8%80/" rel="next" title="信息安全实验一"><span class="post-nav-text">信息安全实验一</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"><span>点击按钮跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br><a class="hty-button hty-button--raised" id="github-issues" href="https://github.com/YunYouJun/yunyoujun.github.io/issues?q=is:issue+信息安全实验二" target="_blank" rel="noopener">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2019 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 李子康</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v4.2.1</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v0.9.2</span></div><div class="live_time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-07-05T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"></circle></svg></a></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>
