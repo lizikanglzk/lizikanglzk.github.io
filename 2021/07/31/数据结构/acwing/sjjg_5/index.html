@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="black"><meta name="author" content="李子康"><meta name="copyright" content="李子康"><meta name="generator" content="Hexo 4.2.1"><meta name="theme" content="hexo-theme-yun"><title>数据结构 第7讲 图的基本概念、存储与遍历 | Lizikang_Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="none" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.11/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_stqaphw3j4.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js" defer></script><script src="/js/pjax.js" defer></script><link rel="shortcut icon" type="image/svg+xml" href="/images/%E7%9A%AE%E5%8D%A1%E4%B8%98-2.ico"><link rel="mask-icon" href="/images/%E7%9A%AE%E5%8D%A1%E4%B8%98-2.ico" color="black"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><link rel="alternate" href="/atom.xml" title="Lizikang_Blog"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"root":"/","title":["Li","Zi","Kang","Blog"],"version":"0.9.2","anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><script src="//at.alicdn.com/t/font_1929835_1z6thct9lfe.js" async></script><meta name="description" content="第7讲 图的基本概念、存储与遍历1.图的基本概念(1) 有向图、无向图(2) 度数（出度、入度）有向图(度数&#x3D; 出度+ 入度)(3) 简单图：不存在顶点到其自身的边，且同一条边不重复出现(4) 路径、环、简单路径(路径不包括重复的点和边)(5) 无向完全图：任意两个顶点之间都存在边，有n个顶点的无向完全图有 n × (n - 1) &#x2F; 2条边  $C_n^2$  (6) 有向完全图：任意两个顶点之">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构 第7讲 图的基本概念、存储与遍历">
+<meta property="og:url" content="http://yoursite.com/2021/07/31/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_5/index.html">
+<meta property="og:site_name" content="Lizikang_Blog">
+<meta property="og:description" content="第7讲 图的基本概念、存储与遍历1.图的基本概念(1) 有向图、无向图(2) 度数（出度、入度）有向图(度数&#x3D; 出度+ 入度)(3) 简单图：不存在顶点到其自身的边，且同一条边不重复出现(4) 路径、环、简单路径(路径不包括重复的点和边)(5) 无向完全图：任意两个顶点之间都存在边，有n个顶点的无向完全图有 n × (n - 1) &#x2F; 2条边  $C_n^2$  (6) 有向完全图：任意两个顶点之">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104030253.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104213673.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104521920.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104800116.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104926532.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729110331380.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729110519251.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729111136419.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200155030.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200331352.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200451584.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731201247684.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200505895.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731201626895.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200534554.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200720120.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200736145.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200744719.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731202243426.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200806877.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731202839991.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731202920328.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200835228.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200858377.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200910981.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200928722.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731204125576.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200947371.png">
+<meta property="article:published_time" content="2021-07-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-25T06:30:42.183Z">
+<meta property="article:author" content="李子康">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104030253.png"><script src="/js/ui/mode.js"></script><link rel="alternate" href="/atom.xml" title="Lizikang_Blog" type="application/atom+xml">
+</head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script defer src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="李子康"><img width="96" loading="lazy" src="/images/bak.jpg" alt="李子康"></a><div class="site-author-name"><a href="/about/">李子康</a></div><a class="site-name" href="/about/site.html">Lizikang_Blog</a><sub class="site-subtitle"></sub><div class="site-desciption">个人技术博客</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="我的主页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">24</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">12</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">8</span></a></div><a class="site-state-item hty-icon-button" href="https://yun.yunyoujun.cn" target="_blank" rel="noopener" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1191787635&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/lizikanglzk" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:1191787635@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://gitee.com/li_zikang" title="gitee" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-gitee-copy"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=506556053" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://blog.csdn.net/qq_43845915" title="csdn" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-csdn11"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/zou-guo-lu-guo-bu-yao-cuo-guo-88" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/352594163" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微信" target="_blank" style="color:#1AAD19"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-2-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="/game1" title="Telegram Channel" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-youxi-copy-copy"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://travellings.now.sh/" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-send-plane-2-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-men-line"></use></svg></a><a class="links-item hty-icon-button" href="/girls/" title="我的老婆们" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-women-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#第7讲-图的基本概念、存储与遍历"><span class="toc-text">第7讲 图的基本概念、存储与遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-图的基本概念"><span class="toc-text">1.图的基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-图的存储及基本操作"><span class="toc-text">2.图的存储及基本操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-图的遍历"><span class="toc-text">3.图的遍历</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-拓扑排序"><span class="toc-text">4.拓扑排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-考题：2011-8、2012-5、2012-6、2013-7、2013-8、2014-7、2015-5、2016-6、2016-7、2017-3、2017-7、2018-7、2020-6"><span class="toc-text">5.考题：2011-8、2012-5、2012-6、2013-7、2013-8、2014-7、2015-5、2016-6、2016-7、2017-3、2017-7、2018-7、2020-6</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/31/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_5/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="李子康"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Lizikang_Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">数据结构 第7讲 图的基本概念、存储与遍历</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2021-07-31 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-31T00:00:00+08:00">2021-07-31</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-08-25 14:30:42" itemprop="dateModified" datetime="2021-08-25T14:30:42+08:00">2021-08-25</time></div><span class="post-busuanzi"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-eye-line"></use></svg> <span id="busuanzi_value_page_pv"></span></span></span><div class="post-classify"><span class="post-category"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">数据结构</span></a></span> > <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">acwing</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">数据结构</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:black;"><h3 id="第7讲-图的基本概念、存储与遍历"><a href="#第7讲-图的基本概念、存储与遍历" class="headerlink" title="第7讲 图的基本概念、存储与遍历"></a>第7讲 图的基本概念、存储与遍历</h3><h4 id="1-图的基本概念"><a href="#1-图的基本概念" class="headerlink" title="1.图的基本概念"></a>1.图的基本概念</h4><p>(1) 有向图、无向图<br>(2) 度数（出度、入度）有向图(度数= 出度+ 入度)<br>(3) 简单图：不存在顶点到其自身的边，且同一条边不重复出现<br>(4) 路径、环、<strong>简单路径(路径不包括重复的点和边)</strong><br>(5) 无向完全图：<strong>任意两个顶点之间都存在边</strong>，有n个顶点的无向完全图有 n × (n - 1) / 2条边</p>
+<blockquote>
+<p>$C_n^2$</p>
+</blockquote>
+<p>(6) 有向完全图：<strong>任意两个顶点之间</strong>都存在<strong>方向护卫相反的两条弧</strong>，有n个顶点的无向完全图有 n × (n - 1) 条弧</p>
+<blockquote>
+<p>$A_n^2$</p>
+</blockquote>
+<p>(7) 稀疏图&amp;稠密图：有很少条边或弧的图称为稀疏图，反之称为稠密图，相对的概念。</p>
+<h4 id="2-图的存储及基本操作"><a href="#2-图的存储及基本操作" class="headerlink" title="2.图的存储及基本操作"></a>2.图的存储及基本操作</h4><p>(1) <strong>邻接矩阵</strong>：适用于稠密图，可存有向图、无向图。常用。空间复杂度：$O(n^2)$   无法存重边</p>
+<blockquote>
+<p>$ O(n^2)$</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104030253.png" alt="image-20210729104030253" loading="lazy"></p>
+<p>无向图每条边看成2条有向边</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104213673.png" alt="image-20210729104213673" loading="lazy"></p>
+</blockquote>
+<p>(2) <strong>邻接表</strong>：适用于稀疏图，可存有向图、无向图。常用。空间复杂度：O(n + m)  O(m)  可存重边</p>
+<blockquote>
+<p><strong>可存储重边</strong>   使用最多 </p>
+<p>上机用的最多  vector  set stack queue？</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104521920.png" alt="image-20210729104521920" loading="lazy"></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104800116.png" alt="image-20210729104800116" loading="lazy"></p>
+<p>当有重边：</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729104926532.png" alt="image-20210729104926532" loading="lazy"></p>
+</blockquote>
+<p>(3) 邻接多重表，适用于稀疏图，可存无向图。不常用。空间复杂度：O(n + m) 可重存边</p>
+<blockquote>
+<p>领接表 不方便找反向边</p>
+<p>领接表优化为邻接多重表</p>
+</blockquote>
+<blockquote>
+<p>上机不会用，因为oj中会用数组模拟链表，存储连续，相邻的就是反向边。</p>
+</blockquote>
+<p>(4) 十字链表，适用于稀疏图，可存有向图、无向图。不常用。空间复杂度：O(n + m)  不能存重边</p>
+<blockquote>
+<p>对邻接矩阵优化</p>
+<p> <img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729110331380.png" alt="image-20210729110331380" loading="lazy"></p>
+</blockquote>
+<p>(5) <strong>三元组表</strong>，适用于稀疏图，可存有向图，无向图。常用于Bellman-Ford算法、Kruskal算法。空间复杂度：O(m)</p>
+<blockquote>
+<p>m条边 $O(m)$</p>
+<img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729110519251.png" alt="image-20210729110519251" style="zoom:50%;" / loading="lazy">
+
+
+</blockquote>
+<h4 id="3-图的遍历"><a href="#3-图的遍历" class="headerlink" title="3.图的遍历"></a>3.图的遍历</h4><p>(1) 深度优先搜索。邻接表存储的时间复杂度：$O(n + m)$。邻接矩阵存储的时间复杂度：$O(n^2)$</p>
+<blockquote>
+<p>DFS : 能走就必须走， 判重 </p>
+<p>深搜：能走就走，可能撞了南墙才会回头吧、</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210729111136419.png" alt="image-20210729111136419" loading="lazy"></p>
+</blockquote>
+<p>(2) 广度优先搜索。邻接表存储的时间复杂度：$O(n + m)$。邻接矩阵存储的时间复杂度：$O(n^2)$</p>
+<blockquote>
+<p>bfs 宽搜   求最短路径 </p>
+</blockquote>
+<h4 id="4-拓扑排序"><a href="#4-拓扑排序" class="headerlink" title="4.拓扑排序"></a>4.拓扑排序</h4><blockquote>
+<p>拓扑排序：<strong>存在拓扑排序 == 无环</strong>  </p>
+<p><strong>所有边从前指向后</strong></p>
+<p>常用bfs  $ O(n+m)$</p>
+<p><strong>入度为 0 的点</strong>、 最后判断是否每个点是否遍历到了</p>
+</blockquote>
+<p><a href="https://www.acwing.com/problem/content/850/" target="_blank" rel="noopener"><strong>AcWing 848. 有向图的拓扑序列</strong></a></p>
+<p><strong>BFS</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> N = <span class="hljs-number">1e5</span>+<span class="hljs-number">5</span>,M = <span class="hljs-number">1e5</span>+<span class="hljs-number">5</span>;<br><span class="hljs-keyword">int</span> n,m;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Node</span> &#123;</span><br>    <br>    <span class="hljs-keyword">int</span> id;<br>    Node* next;<br>    Node(<span class="hljs-keyword">int</span> _id): id(_id),next(<span class="hljs-literal">NULL</span>)&#123;&#125;<br>    <br>&#125;*head[N];<br><br><span class="hljs-keyword">int</span> d[N] ; <span class="hljs-comment">// 入度</span><br><span class="hljs-keyword">int</span> q[N] ; <span class="hljs-comment">//数组模拟队列</span><br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span>  <span class="hljs-comment">// 添加一条边b-&gt;a  头插法 3-&gt;2-&gt;1;</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> p = <span class="hljs-keyword">new</span> Node(b);<br>    p-&gt;next = head[a];<br>    head[a] = p;<br>    <br>&#125;<br><span class="hljs-comment">// bfs 广搜 </span><br><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">istopsort</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-keyword">int</span> hh = <span class="hljs-number">0</span>, tt  = <span class="hljs-number">-1</span> ;<br>    <br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i= <span class="hljs-number">1</span>; i&lt;=n;i++)&#123; <span class="hljs-comment">// n个点  先找到入度为0的点入队列</span><br>        <br>        <span class="hljs-keyword">if</span>(!d[i]) <span class="hljs-comment">// 此点入度为0</span><br>        &#123;<br>            q[++tt]= i ; <span class="hljs-comment">// 队列入队</span><br>        &#125;<br>        <br>    &#125; <br>    <br>    <span class="hljs-keyword">while</span>(hh&lt;=tt)&#123; <span class="hljs-comment">// 队列不为空</span><br>        <br>        <span class="hljs-keyword">int</span> t = q[hh++]; <span class="hljs-comment">// 取队头</span><br>        <br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> p= head[t];p;p=p-&gt;next)&#123; <span class="hljs-comment">//遍历 领接表 队头的链表head[t]</span><br>            <span class="hljs-keyword">if</span>(-- d[p-&gt;id] == <span class="hljs-number">0</span>)<br>                q[++tt] = p-&gt;id;  <span class="hljs-comment">// 队头去掉后; 后面相连的点入度-1 ; 为0的入队</span><br>            <br>        &#125;<br>        <br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> tt == n - <span class="hljs-number">1</span> ;  <span class="hljs-comment">//队长是否等于n-1  判断是否所有的点都入队了，就是判断是否所有点遍历到了</span><br>    <br>&#125;<br><br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">cin</span>&gt;&gt;n&gt;&gt;m;  <span class="hljs-comment">// n个点 m 条边</span><br>    <br>    <span class="hljs-keyword">while</span>(m--)&#123;<br>        <span class="hljs-keyword">int</span> a,b;<br>        <span class="hljs-built_in">cin</span>&gt;&gt;a&gt;&gt;b;<br>        d[b]++ ;  <span class="hljs-comment">// a-&gt;b 入度+1</span><br>        add(a,b); <span class="hljs-comment">// 插入</span><br>        <br>    &#125;<br>    <span class="hljs-comment">// for(auto p=head[1];p;p=p-&gt;next)</span><br>    <span class="hljs-comment">// cout &lt;&lt; p-&gt;id&lt;&lt;endl;</span><br>    <br>    <span class="hljs-keyword">if</span>(!istopsort()) <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-number">-1</span>&lt;&lt;<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// 不是拓扑排序</span><br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-comment">// q[N] 打印队列</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)<br>        <span class="hljs-built_in">cout</span>&lt;&lt;q[i]&lt;&lt;<span class="hljs-string">' '</span>;<br>        <br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-考题：2011-8、2012-5、2012-6、2013-7、2013-8、2014-7、2015-5、2016-6、2016-7、2017-3、2017-7、2018-7、2020-6"><a href="#5-考题：2011-8、2012-5、2012-6、2013-7、2013-8、2014-7、2015-5、2016-6、2016-7、2017-3、2017-7、2018-7、2020-6" class="headerlink" title="5.考题：2011-8、2012-5、2012-6、2013-7、2013-8、2014-7、2015-5、2016-6、2016-7、2017-3、2017-7、2018-7、2020-6"></a>5.考题：2011-8、2012-5、2012-6、2013-7、2013-8、2014-7、2015-5、2016-6、2016-7、2017-3、2017-7、2018-7、2020-6</h4><p><strong>2011-8</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200155030.png" alt="image-20210731200155030" loading="lazy"></p>
+<blockquote>
+<p><strong>简单路径(路径不包括重复的点和边)</strong></p>
+<p><strong>邻接矩阵</strong>：适用于稠密图，可存有向图、无向图。常用。空间复杂度：O(n^2)  无法存重边</p>
+</blockquote>
+<p><strong>2012-5</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200331352.png" alt="image-20210731200331352" loading="lazy"></p>
+<blockquote>
+<p>广度 </p>
+<p>遍历每条边+每个点 $O(n+e)$ </p>
+</blockquote>
+<p><strong>2012-6</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200451584.png" alt="image-20210731200451584" loading="lazy"></p>
+<blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731201247684.png" alt="image-20210731201247684" loading="lazy"></p>
+<p>$i&lt;= j$ </p>
+<p>拓扑排序：所有边从前指向后 ，存在，但一定不唯一</p>
+</blockquote>
+<p><strong>2013-7</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200505895.png" alt="image-20210731200505895" loading="lazy"></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731201626895.png" alt="image-20210731201626895" loading="lazy"></p>
+<p><strong>2013-8</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200534554.png" alt="image-20210731200534554" loading="lazy"></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200720120.png" alt="image-20210731200720120" loading="lazy"></p>
+<blockquote>
+<p>广度即是层次遍历 </p>
+<p>这种题，我们一定要从 C , D 选项开始看  [dog]</p>
+<p>D： a d e   D错误</p>
+<p>方法：看每个点深度 </p>
+<p>例如 D: abcdhefg  : 01221122 ,不是从小到大即是错的</p>
+<p>A：hcabdegf : 01122233 </p>
+</blockquote>
+<p><strong>2014-7</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200736145.png" alt="image-20210731200736145" loading="lazy"></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200744719.png" alt="image-20210731200744719" loading="lazy"></p>
+<blockquote>
+<p>C</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731202243426.png" alt="image-20210731202243426" loading="lazy"></p>
+</blockquote>
+<p><strong>2015-5</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200806877.png" alt="image-20210731200806877" loading="lazy"></p>
+<blockquote>
+<p>D</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731202839991.png" alt="image-20210731202839991" loading="lazy"></p>
+</blockquote>
+<p><strong>2016-6</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731202920328.png" alt="image-20210731202920328" loading="lazy"></p>
+<blockquote>
+<p>D </p>
+<p>1-&gt;2-&gt;5-&gt;4-&gt;3</p>
+<p>深搜：能走就走，可能撞了南墙才会回头吧、</p>
+</blockquote>
+<p><strong>2016-7</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200835228.png" alt="image-20210731200835228" loading="lazy"></p>
+<blockquote>
+<p>B</p>
+</blockquote>
+<p><strong>2017-3</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200858377.png" alt="image-20210731200858377" loading="lazy"></p>
+<blockquote>
+<p>A</p>
+<p>十字链表，适用于稀疏图，可存有向图、无向图。不常用。空间复杂度：O(n + m)  不能存重边， 对邻接矩阵优化</p>
+</blockquote>
+<p><strong>2017-7</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200910981.png" alt="image-20210731200910981" loading="lazy"></p>
+<blockquote>
+<p>16条边，每条边提供2度</p>
+<p>$2<em>16 - 4</em>3 -3*4= 8  $ </p>
+<p>最大2 ，$ 8/2= 4$ </p>
+<p>$ 3+4+4= 11$ </p>
+</blockquote>
+<p><strong>2018-7</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200928722.png" alt="image-20210731200928722" loading="lazy"></p>
+<blockquote>
+<p>D</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731204125576.png" alt="image-20210731204125576" loading="lazy"></p>
+</blockquote>
+<p><strong>2020-6</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210731200947371.png" alt="image-20210731200947371" loading="lazy"></p>
+<blockquote>
+<p>深搜来写拓扑排序 ，每次到叶节点，即是出度为0的点，遍历也就是相反的顺序</p>
+</blockquote>
+</div></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2021/08/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_5_2/" rel="prev" title="数据结构 第8讲 最小生成树、最短路、关键路径"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">数据结构 第8讲 最小生成树、最短路、关键路径</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2021/07/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_4_3/" rel="next" title="数据结构 第6讲  Huffman编码和Huffman树"><span class="post-nav-text">数据结构 第6讲  Huffman编码和Huffman树</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"></div><div id="valine-container"></div><script src="https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script><script>function initValine() {
+  const valineConfig = {"enable":true,"appId":"q22e7srtjevOqYmzusWCYIru-gzGzoHsz","appKey":"PMyzTxHUFQ77nPj1IWMcMDK3","placeholder":"畅所欲言！","avatar":null,"meta":["nick","mail","link"],"pageSize":10,"visitor":false,"highlight":true,"recordIP":false,"enableQQ":true,"el":"#valine-container","lang":"zh-cn"}
+  valineConfig.path = window.location.pathname
+  new Valine(valineConfig)
+}
+setTimeout(initValine, 1000)</script></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2020 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 李子康</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v4.2.1</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v0.9.2</span></div><div class="live_time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-07-05T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div><div id="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_site_uv" title="总访客量"><span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-user-line"></use></svg></span><span id="busuanzi_value_site_uv"></span></span><span class="footer-separator">|</span><span id="busuanzi_container_site_pv" title="总访问量"><span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-eye-line"></use></svg></span><span id="busuanzi_value_site_pv"></span></span></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"></circle></svg></a></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script><script defer src="/js/player.js"></script></body></html>

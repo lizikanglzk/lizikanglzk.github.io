@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="black"><meta name="author" content="李子康"><meta name="copyright" content="李子康"><meta name="generator" content="Hexo 4.2.1"><meta name="theme" content="hexo-theme-yun"><title>数据结构 第三讲 栈与队列 | Lizikang_Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="none" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.11/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_stqaphw3j4.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js" defer></script><script src="/js/pjax.js" defer></script><link rel="shortcut icon" type="image/svg+xml" href="/images/%E7%9A%AE%E5%8D%A1%E4%B8%98-2.ico"><link rel="mask-icon" href="/images/%E7%9A%AE%E5%8D%A1%E4%B8%98-2.ico" color="black"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><link rel="alternate" href="/atom.xml" title="Lizikang_Blog"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"root":"/","title":["Li","Zi","Kang","Blog"],"version":"0.9.2","anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><script src="//at.alicdn.com/t/font_1929835_1z6thct9lfe.js" async></script><meta name="description" content="第三讲 栈与队列 理解！理解！理解！ 记得看清楚 题目条件  1. 栈和队列的基本概念2. 栈和队列的顺序存储结构 lj 理解为主，用猪头打游戏的男人，hhhh  (1) 栈：栈顶元素位置：指向最后一个元素、指向最后一个元素的下一个位置     stk[N]     指向最后一个元素  &#x2F;&#x2F; top &#x3D; -1     &#x2F;&#x2F; 添加     stk[++top] &#x3D; 1;     &#x2F;&#x2F; 删除">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构 第三讲 栈与队列">
+<meta property="og:url" content="http://yoursite.com/2021/07/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_3/index.html">
+<meta property="og:site_name" content="Lizikang_Blog">
+<meta property="og:description" content="第三讲 栈与队列 理解！理解！理解！ 记得看清楚 题目条件  1. 栈和队列的基本概念2. 栈和队列的顺序存储结构 lj 理解为主，用猪头打游戏的男人，hhhh  (1) 栈：栈顶元素位置：指向最后一个元素、指向最后一个元素的下一个位置     stk[N]     指向最后一个元素  &#x2F;&#x2F; top &#x3D; -1     &#x2F;&#x2F; 添加     stk[++top] &#x3D; 1;     &#x2F;&#x2F; 删除">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710112328076.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210711221927834.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710113728170.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710114909193.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710120238390.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710122637351.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710122842214.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155710532.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155727855.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160938339.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155749687.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710122842214.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155806016.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155820207.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155828999.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155936385.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155954641.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710164603717.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160019021.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160034552.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160046832.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160111572.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710170252466.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710170447918.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710170922595.png">
+<meta property="og:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160206948.png">
+<meta property="article:published_time" content="2021-07-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-25T06:28:40.362Z">
+<meta property="article:author" content="李子康">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710112328076.png"><script src="/js/ui/mode.js"></script><link rel="alternate" href="/atom.xml" title="Lizikang_Blog" type="application/atom+xml">
+</head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script defer src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="李子康"><img width="96" loading="lazy" src="/images/bak.jpg" alt="李子康"></a><div class="site-author-name"><a href="/about/">李子康</a></div><a class="site-name" href="/about/site.html">Lizikang_Blog</a><sub class="site-subtitle"></sub><div class="site-desciption">个人技术博客</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="我的主页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">24</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">12</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">8</span></a></div><a class="site-state-item hty-icon-button" href="https://yun.yunyoujun.cn" target="_blank" rel="noopener" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=1191787635&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/lizikanglzk" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:1191787635@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://gitee.com/li_zikang" title="gitee" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-gitee-copy"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=506556053" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://blog.csdn.net/qq_43845915" title="csdn" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-csdn11"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/zou-guo-lu-guo-bu-yao-cuo-guo-88" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/352594163" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微信" target="_blank" style="color:#1AAD19"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-2-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="/game1" title="Telegram Channel" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-youxi-copy-copy"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://travellings.now.sh/" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-send-plane-2-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-men-line"></use></svg></a><a class="links-item hty-icon-button" href="/girls/" title="我的老婆们" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-women-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#第三讲-栈与队列"><span class="toc-text">第三讲 栈与队列</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-栈和队列的基本概念"><span class="toc-text">1. 栈和队列的基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-栈和队列的顺序存储结构"><span class="toc-text">2. 栈和队列的顺序存储结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-栈和队列的链式存储结构"><span class="toc-text">3. 栈和队列的链式存储结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-栈和队列的应用"><span class="toc-text">4. 栈和队列的应用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AcWing-3302-表达式求值"><span class="toc-text">AcWing 3302. 表达式求值</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-考题：2011-2、2011-3、2012-2、2013-2、2014-2、2014-3、2015-1、2016-3、2017-2、2018-1、2018-2、2019-42、2020-2"><span class="toc-text">5. 考题：2011-2、2011-3、2012-2、2013-2、2014-2、2014-3、2015-1、2016-3、2017-2、2018-1、2018-2、2019-42、2020-2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-押题：AcWing-3302"><span class="toc-text">6. 押题：AcWing 3302</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_3/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="李子康"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Lizikang_Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">数据结构 第三讲 栈与队列</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2021-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-11T00:00:00+08:00">2021-07-11</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-08-25 14:28:40" itemprop="dateModified" datetime="2021-08-25T14:28:40+08:00">2021-08-25</time></div><span class="post-busuanzi"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-eye-line"></use></svg> <span id="busuanzi_value_page_pv"></span></span></span><div class="post-classify"><span class="post-category"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">数据结构</span></a></span> > <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">acwing</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">数据结构</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:black;"><h3 id="第三讲-栈与队列"><a href="#第三讲-栈与队列" class="headerlink" title="第三讲 栈与队列"></a>第三讲 栈与队列</h3><blockquote>
+<p>理解！理解！理解！</p>
+<p>记得看清楚 <strong>题目条件</strong></p>
+</blockquote>
+<h4 id="1-栈和队列的基本概念"><a href="#1-栈和队列的基本概念" class="headerlink" title="1. 栈和队列的基本概念"></a>1. 栈和队列的基本概念</h4><h4 id="2-栈和队列的顺序存储结构"><a href="#2-栈和队列的顺序存储结构" class="headerlink" title="2. 栈和队列的顺序存储结构"></a>2. 栈和队列的顺序存储结构</h4><blockquote>
+<p>lj 理解为主，用猪头打游戏的男人，hhhh</p>
+</blockquote>
+<pre><code>(1) 栈：栈顶元素位置：指向最后一个元素、指向最后一个元素的下一个位置
+    stk[N]
+    指向最后一个元素  // top = -1
+    // 添加
+    stk[++top] = 1;
+    // 删除
+    top--;
+    //栈顶
+    stk[top]
+
+    指向最后一个元素的下一个位置 // top = 0;
+    // 添加
+    stk[top++] = 1;
+    // 删除
+    top--;
+
+    // 返回栈顶
+    stk[top-1]
+
+    // 判断是否为空
+    top == 0  // top==初始值
+
+(2) 队列：一般采用 循环队列 。
+    (a) 队头元素位置：指向第一个元素、指向第一个元素的前一个位置。
+    (b) 队尾元素位置：指向队尾元素、指向队尾元素的下一个位置。
+    p[N]
+    // front rear
+
+    1.front=0 第一个元素，rear=0 最后一个元素的下一个元素
+    // 判空 
+    front == rear
+    // 队满
+    front = (rear+1)%N
+
+    // 插入 
+    q[rear++] = 1;
+    rear %= N
+
+    // 弹出
+    front = (front + 1 )%N;
+
+    // 弹出队头
+    q[front]</code></pre><p>​        </p>
+<pre><code>2.front 第一个元素，rear=-1 最后一个元素
+// 判空 
+front == (rear+1)%N;
+// 队满
+front = (rear+2)%N
+
+// 插入 
+q[++rear] = 1;
+rear %= N
+
+// 弹出
+front = (front + 1 )%N;
+
+// 弹出队头
+q[front]</code></pre><p>​<br>​<br>​<br>​        </p>
+<h4 id="3-栈和队列的链式存储结构"><a href="#3-栈和队列的链式存储结构" class="headerlink" title="3. 栈和队列的链式存储结构"></a>3. 栈和队列的链式存储结构</h4><p><strong>栈</strong></p>
+<blockquote>
+<p>头插 和 头删</p>
+<p>top指向第一个元素</p>
+</blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710112328076.png" alt="image-20210710112328076" loading="lazy"></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210711221927834.png" alt="image-20210711221927834" loading="lazy"></p>
+<p><strong>队列</strong></p>
+<blockquote>
+<p>front 第一个元素</p>
+<p>rear 最后一个元素的下一个元素</p>
+</blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710113728170.png" alt="image-20210710113728170" loading="lazy"></p>
+<h4 id="4-栈和队列的应用"><a href="#4-栈和队列的应用" class="headerlink" title="4. 栈和队列的应用"></a>4. 栈和队列的应用</h4><p><strong>(1) 栈的应用：表达式求值（中缀表达式转后缀表达式、括号匹配）、DFS</strong></p>
+<pre><code>DFS // 套娃？？ 画树图来理解 计算机用栈来维护  深搜
+不撞南墙不回头</code></pre><p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710114909193.png" alt="image-20210710114909193" loading="lazy"></p>
+<p><strong>表达式求值（中缀表达式转后缀表达式、括号匹配）</strong></p>
+<blockquote>
+<p>重要！！！！！！ 必考。</p>
+<p>理解背，模板题</p>
+<h2 id="AcWing-3302-表达式求值"><a href="#AcWing-3302-表达式求值" class="headerlink" title="AcWing 3302. 表达式求值"></a><a href="https://www.acwing.com/problem/content/3305/" target="_blank" rel="noopener">AcWing 3302. 表达式求值</a></h2><p>笔试要求：</p>
+<p>过程，选择题经常考</p>
+<p>往年并没考大题，今年可能。</p>
+<p>一个栈存符号（ +-*/  加减符号优先级）</p>
+<p>一个栈存数字</p>
+</blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710120238390.png" alt="image-20210710120238390" loading="lazy"></p>
+<p><strong>王道书解法：</strong></p>
+<blockquote>
+<p>王道P91-92 11题</p>
+<p>双栈：运算符栈和操作数栈<br>那么操作符优先级怎么定义呢？<br>优先级分为<strong>栈内优先级（in stack priority）isp</strong> 和 <strong>栈外优先级（in coming priority）icp</strong><br>isp[op]表示该操作符op在栈内的优先数, icp[op]表示该操作符op在栈外的优先数,</p>
+<p>对于isp和icp可以用一个map存储 char 到 int 的映射</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710122637351.png" alt="image-20210710122637351" loading="lazy"></p>
+<p><strong>ps：a+b-a*((c+d)/e-f)+g</strong>：</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710122842214.png" alt="image-20210710122842214" loading="lazy"></p>
+</blockquote>
+<p><strong>按照王道书写：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stack&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<br><span class="hljs-built_in">map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt; isp, icp;<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> opers[<span class="hljs-number">6</span>] = &#123;<span class="hljs-string">'+'</span>, <span class="hljs-string">'-'</span>, <span class="hljs-string">'*'</span>, <span class="hljs-string">'/'</span>, <span class="hljs-string">'('</span>, <span class="hljs-string">')'</span>&#125;;<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> isps[<span class="hljs-number">6</span>] = &#123;<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>&#125;, icps[<span class="hljs-number">6</span>] = &#123;<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">1</span>&#125;;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">6</span>; ++i) isp[opers[i]] = isps[i], icp[opers[i]] = icps[i];<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">calc</span><span class="hljs-params">(<span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">char</span>&gt;&amp; ops, <span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<br>    <span class="hljs-keyword">int</span> b = nums.top(); nums.pop();<br>    <span class="hljs-keyword">int</span> a = nums.top(); nums.pop();<br>    <span class="hljs-keyword">char</span> op = ops.top(); ops.pop();<br>    <span class="hljs-keyword">int</span> t;<br>    <span class="hljs-keyword">if</span>(op == <span class="hljs-string">'+'</span>) t = a + b;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(op == <span class="hljs-string">'-'</span>) t = a - b;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(op == <span class="hljs-string">'*'</span>) t = a * b;<br>    <span class="hljs-keyword">else</span> t = a / b;<br>    nums.push(t);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">calculate</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;<br>    s = <span class="hljs-string">"("</span> + s + <span class="hljs-string">")"</span>;<br>    <span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">char</span>&gt; ops;<br>    <span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt;  nums;<br>    <span class="hljs-keyword">int</span> n = s.<span class="hljs-built_in">size</span>();<br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-string">'0'</span> &lt;= s[i] &amp;&amp; s[i] &lt;= <span class="hljs-string">'9'</span>) &#123;<br>            <span class="hljs-keyword">int</span> t = s[i] - <span class="hljs-string">'0'</span>;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; ++j) &#123;<br>                <span class="hljs-keyword">if</span>(<span class="hljs-string">'0'</span> &lt;= s[j] &amp;&amp; s[j] &lt;= <span class="hljs-string">'9'</span>) t = t * <span class="hljs-number">10</span> + (s[j] - <span class="hljs-string">'0'</span>);<br>                <span class="hljs-keyword">else</span> &#123;<br>                    i = j - <span class="hljs-number">1</span>;<br>                    nums.push(t);<br>                    <span class="hljs-keyword">break</span>;<br>                &#125;<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(s[i] == <span class="hljs-string">' '</span>) <span class="hljs-keyword">continue</span>;<br>        <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">if</span>(ops.empty() || isp[ops.top()] &lt; icp[s[i]]) ops.push(s[i]);<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(isp[ops.top()] == icp[s[i]]) ops.pop();<br>            <span class="hljs-keyword">else</span> &#123;<br>                calc(ops, nums);<br>                i--;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> nums.top();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    init();<br>    <span class="hljs-built_in">string</span> s;<br>    <span class="hljs-built_in">cin</span> &gt;&gt; s;<br>    <span class="hljs-built_in">cout</span> &lt;&lt; calculate(s);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>表达式求值，推荐</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stack&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<br><br><span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">char</span>&gt; op;<br><span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt; num;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">eval</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> b = num.top(); num.pop();<br>    <span class="hljs-keyword">auto</span> a = num.top(); num.pop();<br>    <span class="hljs-keyword">auto</span> c = op.top(); op.pop();<br><br>    <span class="hljs-keyword">int</span> x;<br>    <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'+'</span>) x = a + b;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'-'</span>) x = a - b;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'*'</span>) x = a * b;<br>    <span class="hljs-keyword">else</span> x = a / b;<br>    num.push(x);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">string</span> s;<br>    <span class="hljs-built_in">cin</span> &gt;&gt; s;<br><br>    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt; pr&#123;&#123;<span class="hljs-string">'+'</span>, <span class="hljs-number">1</span>&#125;, &#123;<span class="hljs-string">'-'</span>, <span class="hljs-number">1</span>&#125;, &#123;<span class="hljs-string">'*'</span>, <span class="hljs-number">2</span>&#125;, &#123;<span class="hljs-string">'/'</span>, <span class="hljs-number">2</span>&#125;&#125;;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i ++ )<br>    &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isdigit</span>(s[i]))<br>        &#123;<br>            <span class="hljs-keyword">int</span> j = i, x = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">while</span> (j &lt; s.<span class="hljs-built_in">size</span>() &amp;&amp; <span class="hljs-built_in">isdigit</span>(s[j]))<br>                x = x * <span class="hljs-number">10</span> + s[j ++ ] - <span class="hljs-string">'0'</span>;<br>            num.push(x);<br>            i = j - <span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">'('</span>) op.push(s[i]);<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">')'</span>)<br>        &#123;<br>            <span class="hljs-keyword">while</span> (op.top() != <span class="hljs-string">'('</span>) eval();<br>            op.pop();<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            <span class="hljs-keyword">while</span> (op.<span class="hljs-built_in">size</span>() &amp;&amp; op.top() != <span class="hljs-string">'('</span> &amp;&amp; pr[op.top()] &gt;= pr[s[i]])<br>                eval();<br>            op.push(s[i]);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">while</span> (op.<span class="hljs-built_in">size</span>()) eval();<br>    <span class="hljs-built_in">cout</span> &lt;&lt; num.top() &lt;&lt; <span class="hljs-built_in">endl</span>;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>中缀表达式转后缀表达式</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stack&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<br><br><span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">char</span>&gt; op;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">eval</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> c = op.top(); op.pop();<br>    <span class="hljs-built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="hljs-string">' '</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">string</span> s;<br>    <span class="hljs-built_in">cin</span> &gt;&gt; s;<br><br>    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt; pr&#123;&#123;<span class="hljs-string">'+'</span>, <span class="hljs-number">1</span>&#125;, &#123;<span class="hljs-string">'-'</span>, <span class="hljs-number">1</span>&#125;, &#123;<span class="hljs-string">'*'</span>, <span class="hljs-number">2</span>&#125;, &#123;<span class="hljs-string">'/'</span>, <span class="hljs-number">2</span>&#125;&#125;;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i ++ )<br>    &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isdigit</span>(s[i]))<br>        &#123;<br>            <span class="hljs-keyword">int</span> j = i, x = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">while</span> (j &lt; s.<span class="hljs-built_in">size</span>() &amp;&amp; <span class="hljs-built_in">isdigit</span>(s[j]))<br>                x = x * <span class="hljs-number">10</span> + s[j ++ ] - <span class="hljs-string">'0'</span>;<br>            <span class="hljs-built_in">cout</span> &lt;&lt; x &lt;&lt; <span class="hljs-string">' '</span>;<br>            i = j - <span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">'('</span>) op.push(s[i]);<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">')'</span>)<br>        &#123;<br>            <span class="hljs-keyword">while</span> (op.top() != <span class="hljs-string">'('</span>) eval();<br>            op.pop();<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            <span class="hljs-keyword">while</span> (op.<span class="hljs-built_in">size</span>() &amp;&amp; op.top() != <span class="hljs-string">'('</span> &amp;&amp; pr[op.top()] &gt;= pr[s[i]])<br>                eval();<br>            op.push(s[i]);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">while</span> (op.<span class="hljs-built_in">size</span>()) eval();<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p><strong>(2) 队列的应用：BFS</strong></p>
+<blockquote>
+<p>宽搜   层次遍历</p>
+</blockquote>
+<h4 id="5-考题：2011-2、2011-3、2012-2、2013-2、2014-2、2014-3、2015-1、2016-3、2017-2、2018-1、2018-2、2019-42、2020-2"><a href="#5-考题：2011-2、2011-3、2012-2、2013-2、2014-2、2014-3、2015-1、2016-3、2017-2、2018-1、2018-2、2019-42、2020-2" class="headerlink" title="5. 考题：2011-2、2011-3、2012-2、2013-2、2014-2、2014-3、2015-1、2016-3、2017-2、2018-1、2018-2、2019-42、2020-2"></a>5. 考题：2011-2、2011-3、2012-2、2013-2、2014-2、2014-3、2015-1、2016-3、2017-2、2018-1、2018-2、2019-42、2020-2</h4><p><strong>2011-2</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155710532.png" alt="image-20210710155710532" loading="lazy"></p>
+<blockquote>
+<p>栈： a b c d  </p>
+<p>d e c b a</p>
+<p>d c  e b a</p>
+<p>d c b e a</p>
+<p>d c b a e </p>
+<p>4种</p>
+</blockquote>
+<p><strong>2011-3</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155727855.png" alt="image-20210710155727855" loading="lazy"></p>
+<blockquote>
+<p>循环队列</p>
+<p>rear 添加一个元素后移一个 当n-1时添加一个元素 才会到 0 A[0]</p>
+</blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160938339.png" alt="image-20210710160938339" loading="lazy"></p>
+<p><strong>2012-2</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155749687.png" alt="image-20210710155749687" loading="lazy"></p>
+<blockquote>
+<p>A</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710122842214.png" alt="image-20210710122842219" loading="lazy"></p>
+</blockquote>
+<p><strong>2013-2</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155806016.png" alt="image-20210710155806016" loading="lazy"></p>
+<blockquote>
+<p>B</p>
+</blockquote>
+<p><strong>2014-2</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155820207.png" alt="image-20210710155820207" loading="lazy"></p>
+<blockquote>
+<p>B</p>
+</blockquote>
+<p><strong>2014-3</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155828999.png" alt="image-20210710155828999" loading="lazy"></p>
+<blockquote>
+<p>A</p>
+</blockquote>
+<p><strong>2015-1</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155936385.png" alt="image-20210710155936385" loading="lazy"></p>
+<blockquote>
+<p>A</p>
+</blockquote>
+<p><strong>2016-3</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710155954641.png" alt="image-20210710155954641" loading="lazy"></p>
+<blockquote>
+<p>C</p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710164603717.png" alt="image-20210710164603717" loading="lazy"></p>
+</blockquote>
+<p><strong>2017-2</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160019021.png" alt="image-20210710160019021" loading="lazy"></p>
+<blockquote>
+<p>1.尾递归可以不用栈</p>
+<p>C</p>
+</blockquote>
+<p><strong>2018-1</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160034552.png" alt="image-20210710160034552" loading="lazy"></p>
+<blockquote>
+<p>B</p>
+</blockquote>
+<p><strong>2018-2</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160046832.png" alt="image-20210710160046832" loading="lazy"></p>
+<blockquote>
+<p>C    模拟即可</p>
+<p>队列 Q 123456</p>
+<p>栈 </p>
+<p>队列输出 ，队列输出压栈，栈输出</p>
+</blockquote>
+<p><strong>2019-42</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160111572.png" alt="image-20210710160111572" loading="lazy"></p>
+<blockquote>
+<p>设计一个循环队列 ， O(1)时间只能使用链式</p>
+<p>但<strong>不用代码</strong>，只写设计思想即可</p>
+<p>front 对头，rear 最后一个下一个元素</p>
+</blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710170252466.png" alt="image-20210710170252466" loading="lazy"></p>
+<blockquote>
+<p>(3)画出第一个元素入队后的队列状态。</p>
+</blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710170447918.png" alt="image-20210710170447918" loading="lazy"></p>
+<blockquote>
+<p>(4)给出入队操作和出队操作的基本过程。</p>
+</blockquote>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710170922595.png" alt="image-20210710170922595" loading="lazy"></p>
+<p><strong>2020-2</strong></p>
+<p><img src="https://gitee.com/li_zikang/lzk-image/raw/master/img/image-20210710160206948.png" alt="image-20210710160206948" loading="lazy"></p>
+<h4 id="6-押题：AcWing-3302"><a href="#6-押题：AcWing-3302" class="headerlink" title="6. 押题：AcWing 3302"></a>6. 押题：AcWing 3302</h4><p><a href="https://www.acwing.com/problem/content/3305/" target="_blank" rel="noopener"><strong>AcWing 3302</strong></a></p>
+</div></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2021/07/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_4_1/" rel="prev" title="数据结构 第四讲 树的基本概念、二叉树、树和森林"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">数据结构 第四讲 树的基本概念、二叉树、树和森林</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2021/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/acwing/sjjg_2/" rel="next" title="数据结构 第二讲 线性表"><span class="post-nav-text">数据结构 第二讲 线性表</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"></div><div id="valine-container"></div><script src="https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script><script>function initValine() {
+  const valineConfig = {"enable":true,"appId":"q22e7srtjevOqYmzusWCYIru-gzGzoHsz","appKey":"PMyzTxHUFQ77nPj1IWMcMDK3","placeholder":"畅所欲言！","avatar":null,"meta":["nick","mail","link"],"pageSize":10,"visitor":false,"highlight":true,"recordIP":false,"enableQQ":true,"el":"#valine-container","lang":"zh-cn"}
+  valineConfig.path = window.location.pathname
+  new Valine(valineConfig)
+}
+setTimeout(initValine, 1000)</script></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2020 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 李子康</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v4.2.1</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v0.9.2</span></div><div class="live_time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-07-05T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div><div id="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_site_uv" title="总访客量"><span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-user-line"></use></svg></span><span id="busuanzi_value_site_uv"></span></span><span class="footer-separator">|</span><span id="busuanzi_container_site_pv" title="总访问量"><span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-eye-line"></use></svg></span><span id="busuanzi_value_site_pv"></span></span></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"></circle></svg></a></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script><script defer src="/js/player.js"></script></body></html>
